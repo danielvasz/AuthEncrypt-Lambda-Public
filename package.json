@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "app-test": "node src/app/app-test/app-test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0"
+  }
+}

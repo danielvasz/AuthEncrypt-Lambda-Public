@@ -1,0 +1,59 @@
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: AuthEncrypt-Lambda
+frameworkVersion: "4"
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  lambdaHashingVersion: '20201221'
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - ${env:TABLE_DYNAMODB}
+    - Effect: Allow
+      Action:
+        - kms:Encrypt
+        - kms:Decrypt
+        - kms:GenerateDataKey*
+      Resource:
+        - ${env:SYMETRIC_KEY_KMS}
+
+functions:
+  generate_key:
+    handler: src/functions/generate-key/generate-key.generate_key
+    events:
+      - httpApi:
+          path: /generate_key
+          method: get
+  create_table:
+    handler: src/functions/create-table/create-table.create_table
+    events:
+      - httpApi:
+          path: /create_table
+          method: get
+  validate_user:
+    handler: src/functions/validate-user/validate-user.validate_user
+    events:
+      - httpApi:
+          path: /validate_user
+          method: post
+
+resources:
+  Resources:
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: UserTable
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+
