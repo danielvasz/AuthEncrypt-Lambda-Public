@@ -17,7 +17,7 @@ async function decryptPrivateKey(privateKeyBase64) {
         const privateKeyPem = `-----BEGIN PRIVATE KEY-----\n${private_key}\n-----END PRIVATE KEY-----`;
         return privateKeyPem;
     } catch (error) {
-        throw new Error(`decryptPrivateKey: ${error}`);
+        throw error;
     }
 }
 
@@ -26,7 +26,7 @@ async function decryptData(private_key, ciphertext) {
         const decrypted = crypto.privateDecrypt(Buffer.from(private_key), Buffer.from(ciphertext));
         return decrypted.toString('utf8');
     } catch (error) {
-        throw new Error(`decryptData: ${error}`);
+        throw error;
     }
 }
 
@@ -45,7 +45,7 @@ async function getDataBase(dataUser) {
         console.log('data', data);
         return data;
     } catch (error) {
-        throw new Error(`getDataBase: ${error}`);
+        throw error;
     }
 }
 
@@ -57,7 +57,7 @@ async function validateUser(dataBase, dataUser) {
             throw new Error(`validateUser: contrasena incorrecta`);
         }
     } catch (error) {
-        throw new Error(`validateUser: ${error}`);
+        throw error;
     }
 }
 
@@ -65,13 +65,10 @@ exports.validate_user = async (event) => {
     try {
         const body = JSON.parse(event.body);
         const privateKeyPem = await decryptPrivateKey(body.private_key);
-        console.log("privateKeyPem", privateKeyPem);
         const decryptedData = await decryptData(privateKeyPem, body.encrypt_data);
-        console.log("decryptedData", decryptedData);
         const dataBase = await getDataBase(JSON.parse(decryptedData));
-        console.log("dataBase", dataBase);
         const validateData = await validateUser(dataBase.Items[0], JSON.parse(decryptedData));
-        console.log("validateData", validateData);
+
         return {
             statusCode: 200,
             body: JSON.stringify({

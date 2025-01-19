@@ -7,7 +7,7 @@ async function setPublicKey(publicKeyBase64) {
         const publicKeyPem = `-----BEGIN PUBLIC KEY-----\n${public_key}\n-----END PUBLIC KEY-----`;
         return publicKeyPem;
     } catch (error) {
-        throw new Error(`setPublicKey: ${error}`);
+        throw error;
     }
 }
 
@@ -16,7 +16,7 @@ async function encryptData(public_key, message) {
         const  encrypted = crypto.publicEncrypt(public_key, JSON.stringify(message));
         return encrypted;
     } catch (error) {
-        throw new Error(`encryptData: ${error}`);
+        throw error;
     }
 }
 

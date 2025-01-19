@@ -36,6 +36,7 @@ async function addItem() {
 exports.create_table = async (event) => {
     try {
         await addItem();
+        
         return {
             statusCode: 200,
             body: JSON.stringify({
@@ -47,8 +48,7 @@ exports.create_table = async (event) => {
         return {
             statusCode: 500,
             body: JSON.stringify({
-                error: error,
-                message: "An unexpected error occurred. Please try again later.",
+                error: error
             }),
         };
     }

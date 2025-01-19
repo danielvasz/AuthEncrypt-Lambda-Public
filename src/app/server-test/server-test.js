@@ -6,14 +6,10 @@ async function serverGenerateKey() {
         const response = await fetch(serverURL);
         return await response.json();
     } catch (error) {
-        throw new Error(`serverGenerateKey: ${error}`);
+        throw error;
     }
 }
 
-/**
- * 
- * @param {*} params 
- */
 async function serverValidateUser(encrypt_data, private_key) {
     const serverURL = `${URL}/validate_user`;
     try {
@@ -26,7 +22,7 @@ async function serverValidateUser(encrypt_data, private_key) {
         });
         return await response.json();
     } catch (error) {
-        throw new Error(`serverValidateUser: ${error}`);
+        throw error;;
     }
 }
 
