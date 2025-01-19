@@ -1,69 +1,22 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v4
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, Inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# AuthEncrypt-Lambda
 
-# Serverless Framework Node HTTP API on AWS
+**AuthEncrypt-Lambda** es un proyecto basado en AWS Lambda, AWS KMS, AWS DynamoDB, el framework de Serverless y nodejs para la ejecucion de javascript. Utiliza AWS Lambda para generar una llave publica en texto plano y una llave privada encriptada por medio de AWS KMS, partiendo de una maesta simetrica, para encriptar los los datos de usurio y contraseña y enviarlo de vuelta a la funcion lambda, para desepcritar y validar que los datos sean correctos en una tabla de AWS DynamoDB.
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+![Diagrama de arquitectura](./assets/architecture.png)
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+## Características
 
-## Usage
+- Generación de llaves asincrónicas con AWS KMS.
+- Encriptación de datos sensibles como usuario y contraseña.
+- Validación de credenciales en una tabla de DynamoDB.
+- Desplegable fácilmente con el framework Serverless.
 
-### Deployment
+## Requisitos previos
 
-In order to deploy the example, you need to run the following command:
+Antes de usar este proyecto, asegúrate de tener:
 
-```
-serverless deploy
-```
+- Node.js (v18 o superior).
+- Framework Serverless instalado globalmente: `npm install -g serverless`.
+- AWS CLI configurado con las credenciales de acceso adecuadas.
+- Permisos en AWS KMS y DynamoDB para las operaciones requeridas.
 
-After running deploy, you should see output similar to:
-
-```
-Deploying "serverless-http-api" to stage "dev" (us-east-1)
-
-✔ Service deployed to stack serverless-http-api-dev (91s)
-
-endpoint: GET - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/
-functions:
-  hello: serverless-http-api-dev-hello (1.6 kB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [HTTP API (API Gateway V2) event docs](https://www.serverless.com/framework/docs/providers/aws/events/http-api).
-
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
-```
-
-Which should result in response similar to:
-
-```json
-{ "message": "Go Serverless v4! Your function executed successfully!" }
-```
-
-### Local development
-
-The easiest way to develop and test your function is to use the `dev` command:
-
-```
-serverless dev
-```
-
-This will start a local emulator of AWS Lambda and tunnel your requests to and from AWS Lambda, allowing you to interact with your function as if it were running in the cloud.
-
-Now you can invoke the function as before, but this time the function will be executed locally. Now you can develop your function locally, invoke it, and see the results immediately without having to re-deploy.
-
-When you are done developing, don't forget to run `serverless deploy` to deploy the function to the cloud.
